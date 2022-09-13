@@ -103,8 +103,10 @@ void backAction(BuildContext context) {
         ),
         actions: [
           ElevatedButton.icon(
-              onPressed: () =>
-                  Navigator.popUntil(context, (route) => route.isFirst),
+              onPressed: () {
+                int c = 0;
+                Navigator.popUntil(context, (_) => c++ >= 2);
+              },
               icon: const Icon(Icons.arrow_back_rounded),
               label: const Text(
                 'Выйти',

@@ -75,6 +75,7 @@ flutter:
   assets:
       - assets/fonts/
       - assets/translations/
+      - data/levels/
   
 
   fonts:

@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:webeditor/level_editor.dart';
+import 'package:webeditor/level_list.dart';
 import 'dart:convert';
 import '../generator.dart' as generator;
 import '../level.dart';
@@ -46,15 +51,16 @@ class _MenuState extends State<Menu> {
         ),
         Center(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height / 1.2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const Expanded(
-                  child: Text(
+                  child: Center(
+                    child: Text(
                       'Добро пожаловать в веб-редактор уровней Tuda-Suda! Здесь можно:',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 32,
                           color: Colors.white,
                           shadows: [
                             Shadow(
@@ -62,7 +68,10 @@ class _MenuState extends State<Menu> {
                               blurRadius: 3.0,
                               color: Color.fromARGB(255, 0, 0, 0),
                             ),
-                          ])),
+                          ]),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: MenuTab(
@@ -77,16 +86,27 @@ class _MenuState extends State<Menu> {
                 Expanded(
                   child: MenuTab(
                     title: 'Выбрать уровень из списка',
-                    route: () => MaterialPageRoute(
-                        builder: (context) => LevelEditor.level(
-                              level: const Level.empty('Уровень'),
-                            )),
+                    route: () async {
+                      List<Level> levels = [];
+                      var levelsString = await rootBundle
+                          .loadString('data/levels/levels.json');
+
+                      List levelsJson = jsonDecode(levelsString);
+
+                      for (var level in levelsJson) {
+                        levels.add(Level.fromJson(level));
+                      }
+
+                      return MaterialPageRoute(
+                          builder: (context) => LevelList(levels: levels));
+                    },
                     icon: Icons.sort_rounded,
                   ),
                 ),
                 Expanded(
+                  flex: 2,
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 1.6,
                     child: Stack(children: [
                       DropzoneView(
                         cursor: CursorType.grab,
@@ -129,8 +149,9 @@ class _MenuState extends State<Menu> {
                                     '...или просто перетащить файл уровня в это поле'),
                             enabled: false,
                             decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 40),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height / 10),
                               disabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
                                   borderSide: BorderSide(
@@ -142,6 +163,45 @@ class _MenuState extends State<Menu> {
                       ),
                     ]),
                   ),
+                ),
+                Expanded(child: Container()),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.6,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            window.open(
+                                'https://www.youtube.com/channel/UCvb-2jADopGlMKM96qrfKjw',
+                                'Ютуб');
+                          },
+                          icon: const Icon(
+                            Icons.movie_rounded,
+                          ),
+                          label: const Text(
+                            'Ютуб',
+                            style: TextStyle(fontSize: 18),
+                          )),
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            window.open(
+                                'https://play.google.com/store/apps/details?id=com.ivanyr.tudasuda',
+                                'Игра');
+                          },
+                          icon: const Icon(
+                            Icons.sports_esports_rounded,
+                          ),
+                          label: const Text(
+                            'Игра',
+                            style: TextStyle(fontSize: 18),
+                          )),
+                    ],
+                  ),
+                ),
+                Expanded(child: Container()),
+                const Text(
+                  'Ivan "PeaAshMeter" Yuriev, 2022. Идейный вдохновитель: MrTimeman',
                 )
               ],
             ),
@@ -154,7 +214,7 @@ class _MenuState extends State<Menu> {
 
 class MenuTab extends StatelessWidget {
   final String title;
-  final MaterialPageRoute Function() route;
+  final FutureOr<MaterialPageRoute> Function() route;
   final IconData icon;
   const MenuTab(
       {Key? key, required this.title, required this.route, required this.icon})
@@ -224,7 +284,7 @@ class MenuTab extends StatelessWidget {
         });
   }
 
-  void _onTap(BuildContext context) {
-    Navigator.push(context, route());
+  void _onTap(BuildContext context) async {
+    Navigator.push(context, await route());
   }
 }

@@ -964,7 +964,10 @@ class Annihilator extends Mob with Electric, Emitter, Bound, Lazy, Spawner {
           next.y < 0 ||
           next.y >= height ||
           (mobsAtPoints[next] != null &&
-              mobsAtPoints[next]!.whereType<Bound>().isNotEmpty)) {
+              mobsAtPoints[next]!
+                  .whereType<Bound>()
+                  .where((b) => b.isOn)
+                  .isNotEmpty)) {
         break;
       } else {
         if (ps.isNotEmpty) {

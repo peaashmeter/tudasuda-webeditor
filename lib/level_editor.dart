@@ -305,6 +305,7 @@ class _LevelEditorState extends State<LevelEditor> {
 Режим редактирования: E
 Режим копирования: C
 Запустить уровень: R
+Если не работает – переключи на английскую раскладку!
 ''', style: TextStyle(color: Colors.white, fontSize: 16)),
           );
         });
