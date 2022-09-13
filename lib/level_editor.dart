@@ -332,7 +332,7 @@ class _ParametersFormState extends State<ParametersForm> {
           children: [
             SizedBox(
               height: 400,
-              width: 200,
+              width: 300,
               child: SingleChildScrollView(
                 child: Column(
                   children: [
