@@ -916,7 +916,7 @@ class _BoardState extends State<Board> {
           var dy = _calculateDy(playerNotifier.value) < 0
               ? 0.0
               : _calculateDy(playerNotifier.value);
-          dy > verticalController.position.maxScrollExtent
+          dy = dy > verticalController.position.maxScrollExtent
               ? verticalController.position.maxScrollExtent
               : dy;
           verticalController.animateTo(dy,
@@ -998,7 +998,7 @@ class _BoardRowState extends State<BoardRow> {
               var dx = widget.calculateDx(playerNotifier.value) < 0
                   ? 0.0
                   : widget.calculateDx(playerNotifier.value);
-              dx > horizontalController.position.maxScrollExtent
+              dx = dx > horizontalController.position.maxScrollExtent
                   ? horizontalController.position.maxScrollExtent
                   : dx;
 
