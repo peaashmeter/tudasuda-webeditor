@@ -913,7 +913,13 @@ class _BoardState extends State<Board> {
       valueListenable: playerNotifier,
       builder: (context, Player value, child) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          verticalController.animateTo(_calculateDy(value),
+          var dy = _calculateDy(playerNotifier.value) < 0
+              ? 0.0
+              : _calculateDy(playerNotifier.value);
+          dy > verticalController.position.maxScrollExtent
+              ? verticalController.position.maxScrollExtent
+              : dy;
+          verticalController.animateTo(dy,
               duration: const Duration(milliseconds: 300), curve: Curves.ease);
         });
 
@@ -971,7 +977,9 @@ class _BoardRowState extends State<BoardRow> {
   void initState() {
     horizontalController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      horizontalController.animateTo(widget.calculateDx(playerNotifier.value),
+      var dx = widget.calculateDx(playerNotifier.value);
+
+      horizontalController.animateTo(dx,
           duration: const Duration(milliseconds: 300), curve: Curves.ease);
     });
     super.initState();
@@ -987,7 +995,14 @@ class _BoardRowState extends State<BoardRow> {
           valueListenable: playerNotifier,
           builder: (context, Player value, child) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              horizontalController.animateTo(widget.calculateDx(value),
+              var dx = widget.calculateDx(playerNotifier.value) < 0
+                  ? 0.0
+                  : widget.calculateDx(playerNotifier.value);
+              dx > horizontalController.position.maxScrollExtent
+                  ? horizontalController.position.maxScrollExtent
+                  : dx;
+
+              horizontalController.animateTo(dx,
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.ease);
             });
