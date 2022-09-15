@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'game/directions.dart';
@@ -253,43 +254,52 @@ class TilePanel extends StatelessWidget {
     return Container(
       height: getCellSize() + 16,
       color: Colors.blueGrey[900],
-      child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              TilePanelItem(mob: Player(const Point<int>(0, 0))),
-              TilePanelItem(mob: Exit(0, const Point<int>(0, 0))),
-              TilePanelItem(
-                mob: mob_class.Border(1, const Point<int>(0, 0)),
-              ),
-              TilePanelItem(
-                mob: ArrowMob(2, const Point<int>(0, 0), Directions.right, 0, 0,
-                    isAnimated: false),
-              ),
-              TilePanelItem(
-                  mob: Rotator(3, const Point<int>(0, 0), Directions.right,
-                      isAnimated: false)),
-              TilePanelItem(
-                  mob: Switcher(4, const Point<int>(0, 0), [], false)),
-              TilePanelItem(mob: Gate(5, const Point<int>(0, 0), true)),
-              TilePanelItem(mob: TimedDoor(6, const Point<int>(0, 0), 1, [])),
-              TilePanelItem(mob: Info(7, const Point<int>(0, 0), '')),
-              TilePanelItem(mob: Repeater(8, const Point<int>(0, 0), [], 1)),
-              TilePanelItem(
-                mob: Annihilator(
-                  9,
-                  const Point<int>(0, 0),
-                  Directions.right,
-                  1,
-                  4,
-                  [],
+      child: ScrollConfiguration(
+        behavior: const ScrollBehavior().copyWith(dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+          // etc.
+        }),
+        child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                TilePanelItem(mob: Player(const Point<int>(0, 0))),
+                TilePanelItem(mob: Exit(0, const Point<int>(0, 0))),
+                TilePanelItem(
+                  mob: mob_class.Border(1, const Point<int>(0, 0)),
                 ),
-              ),
-              TilePanelItem(mob: Wire(10, const Point<int>(0, 0), [])),
-              TilePanelItem(mob: Pressure(11, const Point<int>(0, 0), [])),
-              TilePanelItem(mob: Portal(12, const Point<int>(0, 0), [], true)),
-            ],
-          )),
+                TilePanelItem(
+                  mob: ArrowMob(
+                      2, const Point<int>(0, 0), Directions.right, 0, 0,
+                      isAnimated: false),
+                ),
+                TilePanelItem(
+                    mob: Rotator(3, const Point<int>(0, 0), Directions.right,
+                        isAnimated: false)),
+                TilePanelItem(
+                    mob: Switcher(4, const Point<int>(0, 0), [], false)),
+                TilePanelItem(mob: Gate(5, const Point<int>(0, 0), true)),
+                TilePanelItem(mob: TimedDoor(6, const Point<int>(0, 0), 1, [])),
+                TilePanelItem(mob: Info(7, const Point<int>(0, 0), '')),
+                TilePanelItem(mob: Repeater(8, const Point<int>(0, 0), [], 1)),
+                TilePanelItem(
+                  mob: Annihilator(
+                    9,
+                    const Point<int>(0, 0),
+                    Directions.right,
+                    1,
+                    4,
+                    [],
+                  ),
+                ),
+                TilePanelItem(mob: Wire(10, const Point<int>(0, 0), [])),
+                TilePanelItem(mob: Pressure(11, const Point<int>(0, 0), [])),
+                TilePanelItem(
+                    mob: Portal(12, const Point<int>(0, 0), [], true)),
+              ],
+            )),
+      ),
     );
   }
 }

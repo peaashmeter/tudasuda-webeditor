@@ -298,7 +298,10 @@ class _LevelEditorState extends State<LevelEditor> {
               'Горячие клавиши',
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
-            content: const Text('''Отменить: Ctrl + Z
+            content: const Text('''
+Разместить блок: ЛКМ
+Удалить блок: ПКМ
+Отменить: Ctrl + Z
 Повторить: Ctrl + Y
 На слой вверх: W
 На слой вниз: S
@@ -2316,7 +2319,7 @@ class _BoardState extends State<Board> {
             var row = cells[k];
             var r = Center(
                 child: SizedBox(
-              height: 50,
+              height: 57,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: ListView(
@@ -2664,7 +2667,7 @@ class _CellState extends State<Cell> with AutomaticKeepAliveClientMixin {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: SizedBox(
-          width: 50,
+          width: 57,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: Container(
